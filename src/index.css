@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #FDF7F3;
+    color: #2F3337;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .animate-dot-1 { animation: dots 1.4s infinite 0s; }
+  .animate-dot-2 { animation: dots 1.4s infinite 0.2s; }
+  .animate-dot-3 { animation: dots 1.4s infinite 0.4s; }
+}
