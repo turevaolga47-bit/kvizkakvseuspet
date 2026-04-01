@@ -1,18 +1,13 @@
 import { useState } from 'react'
 import type { FormData, SubmissionPayload } from '../types'
 import { submitApplication } from '../utils/api'
+import CalendarPicker from './CalendarPicker'
 
 interface BookingFormProps {
   payload: Omit<SubmissionPayload, 'timestamp' | 'name' | 'contact' | 'email' | 'preferredTime' | 'concern'>
   onClose: () => void
 }
 
-const TIME_OPTIONS = [
-  'Утро',
-  'День',
-  'Вечер',
-  'Напишу сама, когда буду готова к разговору',
-]
 
 const EMPTY_FORM: FormData = {
   name: '',
@@ -210,41 +205,25 @@ export default function BookingForm({ payload, onClose }: BookingFormProps) {
                     />
                   </Field>
 
-                  {/* Preferred time */}
+                  {/* Preferred time — calendar */}
                   <Field
-                    label="Когда вам удобнее, чтобы с вами связались"
+                    label="Выберите дату и время встречи"
                     required
                     error={errors.preferredTime}
+                    hint="Пн–Чт: 10:00–20:00 · Пт: 15:00–18:00 · Сб–Вс: выходной"
                   >
-                    <div className="relative">
-                      <select
-                        value={form.preferredTime}
-                        onChange={set('preferredTime')}
-                        className="field-input appearance-none pr-10"
-                        style={{ color: form.preferredTime ? '#2F3337' : '#9CA3AF' }}
-                      >
-                        <option value="" disabled>
-                          Выберите удобное время
-                        </option>
-                        {TIME_OPTIONS.map((opt) => (
-                          <option key={opt} value={opt} style={{ color: '#2F3337' }}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                      {/* Chevron */}
-                      <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                        <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
-                          <path
-                            d="M1 1L7 7L13 1"
-                            stroke="#6B7280"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    </div>
+                    <CalendarPicker
+                      value={form.preferredTime}
+                      onChange={(v) => {
+                        setForm(f => ({ ...f, preferredTime: v }))
+                        if (errors.preferredTime) setErrors(e => ({ ...e, preferredTime: undefined }))
+                      }}
+                    />
+                    {form.preferredTime && (
+                      <p className="text-xs font-medium mt-1" style={{ color: '#E9A6B2' }}>
+                        Выбрано: {form.preferredTime}
+                      </p>
+                    )}
                   </Field>
 
                   {/* Concern */}
